@@ -14,7 +14,7 @@ CREATE TABLE products (
   PRIMARY KEY (item_id)
 );
 
-INSERT INTO products (product_name, price, stock_quantity)
+INSERT INTO products (item_id, product_name, price, stock_quantity)
 VALUES ("Chocolate Bar", 2, 90);
 
 INSERT INTO products (product_name, price, stock_quantity)
