@@ -31,7 +31,7 @@ var start = function () {
             name: "id",
             type: "list",
             message: "What candy ID would you like to choose?",
-            choices: [1, 2, 3, 4, 5, 6, 7]
+            choices: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         }, {
             name: "quantity",
             type: "input",
@@ -41,28 +41,26 @@ var start = function () {
 
             connection.query("SELECT * FROM products WHERE item_id='" + answer.id + "'", function (err, res) {
                 if (err) throw err;
-                console.log("This is the response from the database: " + JSON.stringify(res));
+                // console.log("This is the response from the database: " + JSON.stringify(res));
                 // var stockQuantity = res[0].stock_quantity - answer.quantity;
 
-                if(answer.quantity <= res[0].stock_quantity) {
-                    var total =+ res[0].stock_quantity * res[0].price; 
-                    console.log("There are still items available in stock")
+                if (answer.quantity <= res[0].stock_quantity) {
+                    var total = + res[0].stock_quantity * res[0].price - res[0].units_left;
+                    console.log("There are: " + res[0].stock_quantity + " total bars available in stock")
                     console.log("Total cost of " + answer.quantity + " " + res[0].product_name + " is " + total);
-                    connection.query("UPDATE products SET stock_quantity = stock_quantity - " + answer.quantity + " WHERE item_id = " + answer.id);
+                    connection.query("UPDATE products SET units_left = stock_quantity - " + answer.quantity + " WHERE item_id = " + answer.id);
                 } else {
-                    console.log("Not Enough" + res[0].product_name)
+                    console.log("Not Enough: " + res[0].product_name)
                 }
 
                 for (var i = 0; i < res.length; i++) {
                     console.log("ID: " + res[0].item_id);
                     console.log("Name: " + res[0].product_name);
                     console.log("Quantity: " + res[0].stock_quantity)
-                    console.log("Quantity: " + res[0].price)
+                    console.log("Price: " + res[0].price)
                     console.table(res);
                 }
-
             })
-
         })
 }
 queryCandy();
