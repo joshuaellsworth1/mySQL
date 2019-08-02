@@ -45,9 +45,9 @@ var start = function () {
                 // var stockQuantity = res[0].stock_quantity - answer.quantity;
 
                 if (answer.quantity <= res[0].stock_quantity) {
-                    var total = + res[0].stock_quantity * res[0].price - res[0].units_left;
+                    // var total = + res[0].stock_quantity * res[0].price - res[0].units_left;
                     console.log("There are: " + res[0].stock_quantity + " total bars available in stock")
-                    console.log("Total cost of " + answer.quantity + " " + res[0].product_name + " is " + total);
+                    console.log("Total cost of " + answer.quantity + " " + res[0].product_name + " is " + answer.quantity * res[0].price);
                     connection.query("UPDATE products SET units_left = stock_quantity - " + answer.quantity + " WHERE item_id = " + answer.id);
                 } else {
                     console.log("Not Enough: " + res[0].product_name)
