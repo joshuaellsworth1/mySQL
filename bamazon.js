@@ -47,7 +47,7 @@ var start = function () {
                 if(answer.quantity <= res[0].stock_quantity) {
                     var total =+ res[0].stock_quantity * res[0].price; 
                     console.log("There are still items available in stock")
-                    console.log("Total cost " + answer.quantity + " " + res[0].product_name + " is " + total);
+                    console.log("Total cost of " + answer.quantity + " " + res[0].product_name + " is " + total);
                     connection.query("UPDATE products SET stock_quantity = stock_quantity - " + answer.quantity + " WHERE item_id = " + answer.id);
                 } else {
                     console.log("Not Enough" + res[0].product_name)
