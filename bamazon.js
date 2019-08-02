@@ -12,9 +12,6 @@ var connection = mysql.createConnection({
 connection.connect(function (err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId + "\n");
-    // myFunction();
-    queryCandy();
-    // start();
 });
 
 function queryCandy() {
@@ -42,17 +39,18 @@ var start = function () {
         }]).then(function (answer) {
             console.log("Item ID: " + parseInt(answer.id) + " | Quantity:" + parseInt(answer.quantity));
 
-            connection.query("SELECT * FROM products WHERE item_id='" + answer.id +"'", function (err, res) {
+            connection.query("SELECT * FROM products WHERE item_id='" + answer.id + "'", function (err, res) {
                 if (err) throw err;
-                // console.log("This is the response from the database: " + JSON.stringify(res));
-                var stockQuantity = res[0].stock_quantity - answer.quantity;
+                console.log("This is the response from the database: " + JSON.stringify(res));
+                // var stockQuantity = res[0].stock_quantity - answer.quantity;
 
                 if(answer.quantity <= res[0].stock_quantity) {
                     var total =+ res[0].stock_quantity * res[0].price; 
-                    console.log("Total " + answer.quantity + " " + res[0].product_name + " is " + total);
-                    connection.query("UPDATE product_name SET stock_quantity = stock_quantity - " + res + "WHERE item_id = " + id);
+                    console.log("There are still items available in stock")
+                    console.log("Total cost " + answer.quantity + " " + res[0].product_name + " is " + total);
+                    connection.query("UPDATE products SET stock_quantity = stock_quantity - " + answer.quantity + " WHERE item_id = " + answer.id);
                 } else {
-                    console.log("Not Enough")
+                    console.log("Not Enough" + res[0].product_name)
                 }
 
                 for (var i = 0; i < res.length; i++) {
@@ -60,19 +58,12 @@ var start = function () {
                     console.log("Name: " + res[0].product_name);
                     console.log("Quantity: " + res[0].stock_quantity)
                     console.log("Quantity: " + res[0].price)
-
+                    console.table(res);
                 }
 
             })
 
         })
 }
-
-// function id1() {
-
-//     // connection.connect("SELECT item_id * FROM products WHERE stock_quantity "), function (err, res) {
-//     //     if (err) throw err;
-//     //     console.log(res)
-//     // }
-//     connection.end();
-// }
+queryCandy();
+start();
